@@ -30,7 +30,9 @@
       </thead>
       <tbody>
         <tr v-for="document of documents" :key="document.id">
-          <td>{{document.id}}</td>
+          <td>
+            <a href="#" @click="showAbstract(document)">{{document.id}}</a>
+          </td>
           <td>{{document.title}}</td>
         </tr>
       </tbody>
@@ -46,6 +48,9 @@ const searchBaseUrl =
 
 const summaryBaseUrl =
   "https://stackpond-ncbi-api.herokuapp.com/summary?database=pubmed";
+
+const fetchBaseUrl =
+  "https://stackpond-ncbi-api.herokuapp.com/fetch?database=pubmed";
 
 export default {
   name: "Dashboard",
@@ -82,6 +87,17 @@ export default {
             self.documents.push(document);
           });
         });
+      });
+    },
+    showAbstract(document) {
+      //let self = this;
+      let fetchUrl = `${fetchBaseUrl}&id=${document.id}`;
+
+      axios.get(fetchUrl).then(response => {
+        let abstract =
+          response.data.PubmedArticleSet.PubmedArticle.MedlineCitation.Article
+            .Abstract.AbstractText._text;
+        alert(JSON.stringify(abstract));
       });
     }
   }
