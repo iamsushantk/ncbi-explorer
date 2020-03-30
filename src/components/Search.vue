@@ -48,7 +48,7 @@ export default {
     axios.get(searchUrl).then(response => {
       let idList = response.data.esearchresult.idlist;
 
-      let summaryIds = idList.splice(0, 1).join(",");
+      let summaryIds = idList.join(",");
       let summaryUrl = `${summaryBaseUrl}&id=${summaryIds}`;
 
       axios.get(summaryUrl).then(response => {
