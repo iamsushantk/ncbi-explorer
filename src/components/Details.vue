@@ -1,9 +1,10 @@
 <template>
   <div class="container-fluid">
-    <h5>PMID# {{$route.params.documentId}}</h5>
-    <h4>{{title}}</h4>
+    <h5 class="mt-2">PMID# {{$route.params.documentId}}</h5>
     <hr />
-    <p>{{abstract}}</p>
+    <h4 class="title">{{title}}</h4>
+    <hr />
+    <p class="abstract">{{abstract}}</p>
   </div>
 </template>
 
@@ -34,3 +35,9 @@ export default {
   }
 };
 </script>
+<style>
+.title,
+.abstract {
+  text-align: justify;
+}
+</style>

@@ -34,7 +34,8 @@ export default {
   name: "Search",
   data() {
     return {
-      documents: []
+      documents: [],
+      searchTerm: ''
     };
   },
   mounted() {
