@@ -3,7 +3,7 @@
     <h5>PMID# {{$route.params.documentId}}</h5>
     <h4>{{title}}</h4>
     <hr />
-    <p>{{abstract || 'No abstract found for this document'}}</p>
+    <p>{{abstract}}</p>
   </div>
 </template>
 
