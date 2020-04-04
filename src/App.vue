@@ -11,21 +11,24 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarCollapse">
-        <div class="form-inline mt-2 mt-md-0">
-          <input class="form-control mr-sm-2" type="text" placeholder="Search" v-model="searchTerm" />
-          <input
-            type="button"
-            value="Search"
-            class="btn btn-outline-success my-2 my-sm-0"
-            @click="search(true)"
-          />
-        </div>
+        <input
+          class="form-control mr-sm-2 w-100"
+          type="text"
+          placeholder="Enter search term"
+          v-model="searchTerm"
+          @keyup.enter="search(true)"
+        />
       </div>
     </nav>
     <div class="container-fluid">
       <div class="row">
         <div class="col">
-          <input type="text" placeholder="Search" class="form-control" v-model="filterTerm" />
+          <input
+            type="text"
+            placeholder="Find PMID, Title, Abstract"
+            class="form-control"
+            v-model="filterTerm"
+          />
         </div>
       </div>
       <div class="row m-1">
@@ -64,8 +67,8 @@ export default {
   computed: {
     documents() {
       if (this.filterTerm !== "") {
-        return this.$store.getters.documents.filter(
-          d => d.id.includes(this.filterTerm)
+        return this.$store.getters.documents.filter(d =>
+          d.id.includes(this.filterTerm)
         );
       } else {
         return this.$store.getters.documents;
