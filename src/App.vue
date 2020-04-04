@@ -7,12 +7,13 @@
       <div class="row">
         <div class="col">
           <div class="input-group">
-            <input
+            <textarea
               type="text"
+              rows="1"
               class="form-control"
               v-model="searchTerm"
               placeholder="Enter search term"
-            />
+            ></textarea>
             <div class="input-group-append">
               <input type="button" class="input-group-text" @click="search(true)" value="Search" />
               <input
