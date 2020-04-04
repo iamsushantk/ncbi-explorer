@@ -39,13 +39,14 @@ const mainModule = {
     updateSearchResults(state, payload) {
       state.documentCount = payload.documentCount;
       state.documents.push(...payload.documents);
-      state.currentPageCount += state.pageLimit;
+      state.currentPageCount += payload.documentsLoaded;
     }
   },
   actions: {
     search(context, payload) {
       let documents = [];
       let documentCount = 0;
+      let documentsLoaded = 0;
 
       if (payload.reset) {
         context.commit('reset');
@@ -54,8 +55,11 @@ const mainModule = {
       let searchUrl = encodeURI(`${searchBaseUrl}&term=${payload.searchTerm}&retmax=${context.state.pageLimit}&retstart=${context.state.currentPageCount}`);
 
       axios.get(searchUrl).then(response => {
+
+        console.log(response.data.esearchresult);
         let idList = response.data.esearchresult.idlist;
-        documentCount = response.data.esearchresult.count;
+        documentCount = parseInt(response.data.esearchresult.count);
+        documentsLoaded = parseInt(response.data.esearchresult.retmax);
 
         let fetchUrl = `${fetchBaseUrl}&id=${idList.join(',')}`;
 
@@ -70,7 +74,7 @@ const mainModule = {
             let content = '';
 
             let document = {
-              id: pmid,
+              id: parseInt(pmid),
               title: title,
               abstract: ''
             };
@@ -95,7 +99,8 @@ const mainModule = {
 
           context.commit('updateSearchResults', {
             documents,
-            documentCount
+            documentCount,
+            documentsLoaded
           });
         });
       });

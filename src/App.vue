@@ -12,7 +12,7 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <input
-          class="form-control mr-sm-2 w-100"
+          class="form-control"
           type="text"
           placeholder="Enter search term"
           v-model="searchTerm"
@@ -22,7 +22,7 @@
     </nav>
     <div class="container-fluid">
       <div class="row">
-        <div class="col">
+        <div class="col-12">
           <input
             type="text"
             placeholder="Find PMID, Title, Abstract"
