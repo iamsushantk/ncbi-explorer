@@ -47,10 +47,10 @@
       </div>
     </div>
     <nav v-show="documents.length > 0" class="navbar fixed-bottom navbar-light navbar-dark bg-dark">
-      <div class="btn btn-outline-success m-1" @click="search(false)">Load more</div>
+      <div class="btn btn-outline-success m-1" @click="search(false)">More</div>
       <span
         class="navbar-brand"
-      >Loaded total of {{$store.getters.totalDocumentsLoaded}} of {{$store.getters.documentCount}} documents</span>
+      >{{$store.getters.totalDocumentsLoaded}}/{{$store.getters.documentCount}}</span>
     </nav>
   </div>
 </template>
