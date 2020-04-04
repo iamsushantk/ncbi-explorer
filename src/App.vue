@@ -2,33 +2,28 @@
   <div id="app">
     <nav class="navbar fixed-top navbar-expand-md navbar-dark bg-dark">
       <span class="navbar-brand">{{$store.state.main.appName}}</span>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarCollapse"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarCollapse">
-        <input
-          class="form-control"
-          type="text"
-          placeholder="Enter search term"
-          v-model="searchTerm"
-          @keyup.enter="search(true)"
-        />
-      </div>
     </nav>
     <div class="container-fluid">
       <div class="row">
-        <div class="col-12">
-          <input
-            type="text"
-            placeholder="Find PMID, Title, Abstract"
-            class="form-control"
-            v-model="filterTerm"
-          />
+        <div class="col">
+          <div class="input-group">
+            <input
+              type="text"
+              class="form-control"
+              v-model="searchTerm"
+              placeholder="Enter search term"
+            />
+            <div class="input-group-append">
+              <input type="button" class="input-group-text" @click="search(true)" value="Search" />
+              <input
+                v-show="documents.length > 0"
+                type="button"
+                class="ml-2 input-group-text"
+                @click="logToConsole()"
+                value="Log"
+              />
+            </div>
+          </div>
         </div>
       </div>
       <div class="row m-1">
@@ -81,6 +76,9 @@ export default {
         searchTerm: this.searchTerm,
         reset: reset
       });
+    },
+    logToConsole() {
+      console.log(this.$store.getters.documents);
     }
   }
 };

@@ -55,8 +55,6 @@ const mainModule = {
       let searchUrl = encodeURI(`${searchBaseUrl}&term=${payload.searchTerm}&retmax=${context.state.pageLimit}&retstart=${context.state.currentPageCount}`);
 
       axios.get(searchUrl).then(response => {
-
-        console.log(response.data.esearchresult);
         let idList = response.data.esearchresult.idlist;
         documentCount = parseInt(response.data.esearchresult.count);
         documentsLoaded = parseInt(response.data.esearchresult.retmax);
