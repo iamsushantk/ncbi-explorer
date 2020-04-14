@@ -1,4 +1,6 @@
-# ncbi-explorer
+# NCBI Explorer
+
+A simple Vue based application that presents a simple interface to read Pubmed documents. Try it online at https://stackpond-ncbi-explorer.herokuapp.com/
 
 ## Project setup
 ```
