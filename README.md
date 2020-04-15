@@ -4,6 +4,8 @@ A simple Vue based application that presents a simple interface to read Pubmed d
 
 Try it online at https://stackpond-ncbi-explorer.herokuapp.com/ or download apk [by clicking here](./app-debug.apk)
 
+![NCBI Explorer in action](screenshot.png)
+
 ## Project setup
 ```
 npm install
