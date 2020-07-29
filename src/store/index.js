@@ -4,8 +4,8 @@ import axios from "axios";
 
 Vue.use(Vuex);
 
-const apiUrl = "http://localhost:3000";
-//const apiUrl = 'https://stackpond-ncbi-api.herokuapp.com';
+//const apiUrl = "http://localhost:3000";
+const apiUrl = 'https://stackpond-ncbi-api.herokuapp.com';
 
 const searchBaseUrl = `${apiUrl}/search?database=pubmed`;
 const fetchBaseUrl = `${apiUrl}/fetch?database=pubmed`;
