@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <nav class="navbar fixed-top navbar-expand-md navbar-dark bg-dark">
-      <span class="navbar-brand">{{$store.state.main.appName}}</span>
+      <span class="navbar-brand">{{ $store.state.main.appName }}</span>
     </nav>
     <div class="container-fluid">
       <div class="row">
@@ -20,6 +20,13 @@
                 v-show="documents.length > 0"
                 type="button"
                 class="ml-2 input-group-text"
+                @click="download()"
+                value="Download"
+              />
+              <input
+                v-show="documents.length > 0"
+                type="button"
+                class="ml-2 input-group-text"
                 @click="logToConsole()"
                 value="Log"
               />
@@ -34,54 +41,69 @@
           class="card mt-1 col-12"
         >
           <div class="card-body">
-            <h6 class="card-title">PMID# {{document.id}}</h6>
-            <h5 class="card-title">{{document.title}}</h5>
+            <h6 class="card-title">PMID# {{ document.id }}</h6>
+            <h5 class="card-title">{{ document.title }}</h5>
             <hr />
-            <div class="card-text text-justify">{{document.abstract}}</div>
+            <div class="card-text text-justify">{{ document.abstract }}</div>
           </div>
         </div>
       </div>
     </div>
     <nav v-show="documents.length > 0" class="navbar fixed-bottom navbar-light navbar-dark bg-dark">
       <div class="btn btn-outline-success m-1" @click="search(false)">More</div>
-      <span
-        class="navbar-brand"
-      >{{$store.getters.totalDocumentsLoaded}}/{{$store.getters.documentCount}}</span>
+      <span class="navbar-brand">
+        {{ $store.getters.totalDocumentsLoaded }}/{{
+        $store.getters.documentCount
+        }}
+      </span>
     </nav>
   </div>
 </template>
 
 <script>
+import { unparse } from "papaparse";
+
 export default {
   name: "App",
   data() {
     return {
       filterTerm: "",
-      searchTerm: ""
+      searchTerm: "",
     };
   },
   computed: {
     documents() {
       if (this.filterTerm !== "") {
-        return this.$store.getters.documents.filter(d =>
+        return this.$store.getters.documents.filter((d) =>
           d.id.includes(this.filterTerm)
         );
       } else {
         return this.$store.getters.documents;
       }
-    }
+    },
   },
   methods: {
     search(reset) {
       this.$store.dispatch("search", {
         searchTerm: this.searchTerm,
-        reset: reset
+        reset: reset,
       });
+    },
+    download() {
+      let csvContent = `data:text/csv;charset=utf-8,${unparse(
+        this.$store.getters.documents,
+        { header: true }
+      )}`;
+
+      let link = document.createElement("a");
+      link.setAttribute("href", encodeURI(csvContent));
+      link.setAttribute("download", "ncbi.csv");
+      link.click();
     },
     logToConsole() {
       console.log(this.$store.getters.documents);
-    }
-  }
+    },
+  },
 };
 </script>
 <style>

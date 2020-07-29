@@ -27,6 +27,7 @@
     "core-js": "^3.6.4",
     "express": "^4.17.1",
     "jquery": "^3.4.1",
+    "papaparse": "^5.2.0",
     "popper.js": "^1.16.1",
     "vue": "^2.6.11",
     "vue-json-pretty": "^1.6.3",

@@ -1,22 +1,22 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from "vue";
+import Vuex from "vuex";
 import axios from "axios";
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
-//const apiUrl = "http://localhost:3000";
-const apiUrl = 'https://stackpond-ncbi-api.herokuapp.com';
+const apiUrl = "http://localhost:3000";
+//const apiUrl = 'https://stackpond-ncbi-api.herokuapp.com';
 
 const searchBaseUrl = `${apiUrl}/search?database=pubmed`;
 const fetchBaseUrl = `${apiUrl}/fetch?database=pubmed`;
 
 const mainModule = {
   state: {
-    appName: 'NCBI Explorer',
+    appName: "NCBI Explorer",
     documents: [],
     pageLimit: 100,
     currentPageCount: 0,
-    documentCount: 0
+    documentCount: 0,
   },
   getters: {
     documents(state) {
@@ -27,8 +27,7 @@ const mainModule = {
     },
     totalDocumentsLoaded(state) {
       return state.currentPageCount;
-    }
-
+    },
   },
   mutations: {
     reset(state) {
@@ -40,7 +39,7 @@ const mainModule = {
       state.documentCount = payload.documentCount;
       state.documents.push(...payload.documents);
       state.currentPageCount += payload.documentsLoaded;
-    }
+    },
   },
   actions: {
     search(context, payload) {
@@ -49,42 +48,44 @@ const mainModule = {
       let documentsLoaded = 0;
 
       if (payload.reset) {
-        context.commit('reset');
+        context.commit("reset");
       }
 
-      let searchUrl = encodeURI(`${searchBaseUrl}&term=${payload.searchTerm}&retmax=${context.state.pageLimit}&retstart=${context.state.currentPageCount}`);
+      let searchUrl = encodeURI(
+        `${searchBaseUrl}&term=${payload.searchTerm}&retmax=${context.state.pageLimit}&retstart=${context.state.currentPageCount}`
+      );
 
-      axios.get(searchUrl).then(response => {
+      axios.get(searchUrl).then((response) => {
         let idList = response.data.esearchresult.idlist;
         documentCount = parseInt(response.data.esearchresult.count);
         documentsLoaded = parseInt(response.data.esearchresult.retmax);
 
-        let fetchUrl = `${fetchBaseUrl}&id=${idList.join(',')}`;
+        let fetchUrl = `${fetchBaseUrl}&id=${idList.join(",")}`;
 
-        axios.get(fetchUrl).then(response => {
+        axios.get(fetchUrl).then((response) => {
           let result = response.data;
           let articles = result.PubmedArticleSet.PubmedArticle;
 
-          articles.forEach(article => {
+          articles.forEach((article) => {
             let abstract = article.MedlineCitation.Article.Abstract;
             let title = article.MedlineCitation.Article.ArticleTitle._text;
             let pmid = article.MedlineCitation.PMID._text;
-            let content = '';
+            let content = "";
 
             let document = {
               id: parseInt(pmid),
               title: title,
-              abstract: ''
+              abstract: "",
             };
 
             if (abstract) {
               let abstractText = abstract.AbstractText;
 
               if (Array.isArray(abstractText)) {
-                let abstractParagraphs = abstractText.map(a => a._text);
-                content = abstractParagraphs.join(',');
+                let abstractParagraphs = abstractText.map((a) => a._text);
+                content = abstractParagraphs.join(",");
               } else if (Array.isArray(abstractText._text)) {
-                content = abstractText._text.join(',');
+                content = abstractText._text.join(",");
               } else {
                 content = abstractText._text;
               }
@@ -95,22 +96,22 @@ const mainModule = {
             documents.push(document);
           });
 
-          context.commit('updateSearchResults', {
+          context.commit("updateSearchResults", {
             documents,
             documentCount,
-            documentsLoaded
+            documentsLoaded,
           });
         });
       });
-    }
-  }
-}
+    },
+  },
+};
 
 /* eslint-disable no-new */
 const store = new Vuex.Store({
   modules: {
-    main: mainModule
+    main: mainModule,
   },
-})
+});
 
-export default store
+export default store;
